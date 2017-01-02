@@ -29,74 +29,55 @@ public class SarlConnector
     implements StartupListener, MobsimInitializedListener, MobsimBeforeSimStepListener,
     MobsimAfterSimStepListener
 {
-    public static final int SYNC_PERIOD = 60; //1 minute
+    public static final int SYNC_PERIOD = 60; //1 minute ?????????????????????????
+    private double currentTime;
 
 
     @Override
     public void notifyStartup(StartupEvent event)
     {
-        // TODO setup all data and the connection with SARL
-
+        // TODO
+        // open matsim serversocket for communication with sarl
+        // setup all data and the connection with SARL (once per simulation)
     }
 
 
     @Override
     public void notifyMobsimInitialized(MobsimInitializedEvent e)
     {
-        // TODO update/reset necessary data and synchronise with SARL
+        // TODO
+        // update/reset necessary data and synchronise with SARL (once per iteration)
 
+        currentTime = 0;
     }
 
 
     @Override
     public void notifyMobsimBeforeSimStep(MobsimBeforeSimStepEvent e)
     {
-        if (e.getSimulationTime() % SYNC_PERIOD == 0) {
+        currentTime = e.getSimulationTime();
+        if (currentTime % SYNC_PERIOD == 0) {
             // TODO First listen to the incoming JSON input, process it
-            processInput();
+            //processInput(message);
         }
-        
-        //trigger SARL events planned for this time step 
+
+        //trigger SARL events planned for this time step
+        //TODO when sarl events are triggered? 
+        // 1. all at the beginning/end of a period (end == more realistic option)
+        // 2. each at exact time step (if we know when they were actually triggered in sarl) 
     }
 
 
     @Override
     public void notifyMobsimAfterSimStep(MobsimAfterSimStepEvent e)
     {
+        //TODO
         //collect matsim events (if not collected directly during simStep)
-        
-        if ( (e.getSimulationTime() - 1) % SYNC_PERIOD == 0) {
-            // TODO Generate output for SARL and send it as JSON objects
-            provideOutput();
-        }
-    }
-
-
-    //TYPE SUBMIT REQUEST:
-    //contains an array of all the requests that are generated for a specific timestamp.
-    //TYPE COMMIT PROPOSAL:
-    //contains an array of all the proposals that wants to be committed for a specific timestamp.
-    //TYPE DENY PROPOSAL:
-    //contains an array of all the proposals that wants to be denied for a specific timestamp.
-    private void processInput()
-    {
-        //TODO
-        //read input
-        //schedule SARL events
-    }
-
-
-    //TYPE SUBMIT PROPOSAL:
-    //contains an array of all the proposals that are generated for a specific timestamp.
-    //TYPE COMMIT PROPOSAL ACCEPTED:
-    //contains an array of all the proposals for which the commits are accepted for a specific timestamp.
-    //TYPE COMMIT PROPOSAL REJECTED:
-    //contains an array of all the proposals for which the commits are rejected for a specific timestamp.
-    private void provideOutput()
-    {
-        //TODO
-        //answer requests
         //include matsim events (pickup, dropoff, etc.) collected over the last period
-        //clear the collection
+
+        if ( (currentTime - 1) % SYNC_PERIOD == 0) {
+            // TODO Generate output for SARL and send it as JSON objects
+            //String message = provideOutput();
+        }
     }
 }
