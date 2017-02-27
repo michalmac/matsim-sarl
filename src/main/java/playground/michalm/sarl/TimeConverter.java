@@ -26,7 +26,7 @@ import java.util.Date;
 public class TimeConverter
 {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
-            "yyy-MM-dd HH:mm:ss.SSS");
+            "dd-MM-yyyy HH:mm:ss");
 
     private final long t0;
 

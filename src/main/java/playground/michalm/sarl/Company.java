@@ -28,7 +28,7 @@ public class Company
 {
     private final Id<Company> id;
 
-    private final VrpData vrpData = new VrpDataImpl();
+    private final Fleet fleet = new FleetImpl();
 
 
     public Company(Id<Company> id)
@@ -44,8 +44,8 @@ public class Company
     }
 
 
-    public VrpData getVrpData()
+    public Fleet getFleet()
     {
-        return vrpData;
+        return fleet;
     }
 }
